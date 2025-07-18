@@ -1,0 +1,572 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>User Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
+    
+   <!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+
+<!-- Icomoon Icons (Optional: use similar icons if needed) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/icomoon@1.0.0/style.css">
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+<!-- jQuery UI -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+<!-- Owl Carousel -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+<!-- Fancybox -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+
+<!-- AOS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+   <style>
+/* Base body styles */
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #f8fafc;
+  color: #333;
+}
+
+/* Navbar improvements */
+.navback {
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.site-logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a73e8;
+}
+
+.site-logo a {
+  color: #1a73e8 !important;
+  text-decoration: none;
+}
+
+.site-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.site-menu li {
+  margin: 0 12px;
+}
+
+.site-navigation .nav-link {
+  color: #333 !important;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.site-navigation .nav-link:hover,
+.site-navigation .nav-link.active {
+  color: #1a73e8 !important;
+}
+
+/* Hide mobile menu on large screens */
+.site-mobile-menu {
+  display: none !important;
+}
+
+/* Section titles */
+.section-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #1a73e8;
+}
+
+/* Cards */
+.unit-4,
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.unit-4:hover,
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Carousel images */
+.slide-one-item-alt img,
+.unit-4-icon img {
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #1a73e8;
+  border: none;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #155ab6;
+}
+
+/* Footer */
+.site-footer {
+  background: #f1f3f5;
+  padding-top: 3rem;
+}
+
+.footer-heading {
+  font-weight: 600;
+  color: #1a73e8;
+}
+
+.site-footer a {
+  color: #1a73e8;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.site-footer a:hover {
+  color: #0d47a1;
+  text-decoration: underline;
+}
+
+.site-footer ul {
+  list-style: none;
+  padding: 0;
+}
+
+.site-footer ul li {
+  margin-bottom: 8px;
+}
+
+.footer-social a {
+  font-size: 1.2rem;
+  margin-right: 12px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .site-navigation ul.site-menu {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .site-menu li {
+    margin: 8px 0;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .unit-4,
+  .card {
+    padding: 20px;
+  }
+}
+</style>
+
+    
+  </head>
+  
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  
+    {% if messages %}
+    {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <script>swal({
+                    title: "Success!",
+                    text: "{{message}}",
+                    icon: "success",
+                    button: "OK",
+                });
+            </script>
+        
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+            <script>swal({
+                    title: "Warning :)",
+                    text: "{{message}}",
+                    icon: "warning",
+                    button: "OK",
+                
+                });
+            </script>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            <script>swal({
+                    title: "info :)",
+                    text: "{{message}}",
+                    icon: "info",
+                    button: "OK",
+                });
+            </script>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <script>swal({
+                    title: "error :)",
+                    text: "{{message}}",
+                    icon: "error",
+                    button: "OK",
+                });
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+  <div id="overlayer"></div>
+  <div class="loader">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+
+  <div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+   
+    
+    <header class="site-navbar js-sticky-header site-navbar-target navback" role="banner">
+
+      <div class="container">
+        <div class="row align-items-center">
+          
+          <div class="col-6 col-xl-2">
+            <h1 class="mb-0 site-logo"><a href="{% url 'home' %}" class="h2 mb-0">Banker<span class="text-primary">.</span> </a></h1>
+          </div>
+
+          <div class="col-12 col-md-10 d-none d-xl-block">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+
+              <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+               
+                <li><a href="{% url 'user_dash' %}" class="nav-link active">Dashboard</a></li>
+                <li><a href="{% url 'user_profile' %}" class="nav-link">Profile</a></li>
+                <li><a href="{% url 'user_predict' %}" class="nav-link">Detect Fraud</a></li>
+                <li><a href="{% url 'home' %}" class="nav-link">Logout</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+
+
+          <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a></div>
+
+        </div>
+      </div>
+      
+    </header>
+
+  
+    <section class="site-section bg-light" id="user-dash" data-aos="fade">
+        <div class="container">
+          <div class="row mb-5">
+            <div class="col-12 text-center mt-5">
+              <h2 class="section-title mb-3 mt-5">User Dashboard</h2>
+            </div>
+          </div>
+    </div>
+    </section>
+
+    <div class="site-section" id="next">
+      <div class="container">
+        <div class="row mb-2">
+          <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="">
+            <img src="{% static 'userapp/images/flaticon-svg/svg/001-wallet.svg' %}" alt="image" class="img-fluid w-25 mb-2">
+            <h3 class="card-title">Money Savings</h3>
+            <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+          </div>
+          <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="100">
+            <img src="{% static 'userapp/images/flaticon-svg/svg/004-cart.svg' %}" alt="image" class="img-fluid w-25 mb-2">
+            <h3 class="card-title">Online Shoppings</h3>
+            <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+          </div>
+          <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="200">
+            <img src="{% static 'userapp/images/flaticon-svg/svg/006-credit-card.svg' %}" alt="image" class="img-fluid w-25 mb-2">
+            <h3 class="card-title">Credit / Debit Cards</h3>
+            <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <section class="site-section">
+      <div class="container">
+
+        <div class="row mb-2 justify-content-center">
+          <div class="col-md-7 text-center">
+            <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="">How It Works</h2>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+          </div>
+        </div>
+        
+        <div class="row align-items-lg-center" >
+          <div class="col-lg-6 mb-5" data-aos="fade-up" data-aos-delay="">
+
+            <div class="owl-carousel slide-one-item-alt">
+              <img src="{% static 'userapp/images/slide_1.jpg' %}" alt="Image" class="img-fluid">
+              <img src="{% static 'userapp/images/slide_2.jpg' %}" alt="Image" class="img-fluid">
+              <img src="{% static 'userapp/images/slide_3.jpg' %}" alt="Image" class="img-fluid">
+            </div>
+            <div class="custom-direction">
+              <a href="#" class="custom-prev"><span><span class="icon-keyboard_backspace"></span></span></a><a href="#" class="custom-next"><span><span class="icon-keyboard_backspace"></span></span></a>
+            </div>
+
+          </div>
+          <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="100">
+            
+            <div class="owl-carousel slide-one-item-alt-text">
+              <div>
+                <h2 class="section-title mb-3">01. Online Applications</h2>
+                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+
+                <p><a href="#" class="btn btn-primary mr-2 mb-2">Learn More</a></p>
+              </div>
+              <div>
+                <h2 class="section-title mb-3">02. Get an approval</h2>
+                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                <p><a href="#" class="btn btn-primary mr-2 mb-2">Learn More</a></p>
+              </div>
+              <div>
+                <h2 class="section-title mb-3">03. Card delivery</h2>
+                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+
+                <p><a href="#" class="btn btn-primary mr-2 mb-2">Learn More</a></p>
+              </div>
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    
+
+    <section class="site-section border-bottom bg-light" id="services-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12 text-center" data-aos="fade">
+            <h2 class="section-title mb-3">Our Services</h2>
+          </div>
+        </div>
+        <div class="row align-items-stretch">
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up">
+            <div class="unit-4">
+              <div class="unit-4-icon">
+                <img src="{% static 'userapp/images/flaticon-svg/svg/001-wallet.svg' %}" alt="image" class="img-fluid w-25 mb-4">
+              </div>
+              <div>
+                <h3>Business Consulting</h3>
+                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                <p><a href="#">Learn More</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="unit-4">
+              <div class="unit-4-icon">
+                <img src="{% static 'userapp/images/flaticon-svg/svg/006-credit-card.svg' %}" alt="image" class="img-fluid w-25 mb-4">
+              </div>
+              <div>
+                <h3>Credit Card</h3>
+                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                <p><a href="#">Learn More</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="unit-4">
+              <div class="unit-4-icon">
+                <img src="{% static 'userapp/images/flaticon-svg/svg/002-rich.svg' %}" alt="image" class="img-fluid w-25 mb-4">
+              </div>
+              <div>
+                <h3>Income Monitoring</h3>
+                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                <p><a href="#">Learn More</a></p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="">
+            <div class="unit-4">
+              <div class="unit-4-icon">
+                <img src="{% static 'userapp/images/flaticon-svg/svg/003-notes.svg' %}" alt="image" class="img-fluid w-25 mb-4">
+              </div>
+              <div>
+                <h3>Insurance Consulting</h3>
+                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                <p><a href="#">Learn More</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="unit-4">
+              <div class="unit-4-icon">
+                <img src="{% static 'userapp/images/flaticon-svg/svg/004-cart.svg' %}" alt="image" class="img-fluid w-25 mb-4">
+              </div>
+              <div>
+                <h3>Financial Investment</h3>
+                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                <p><a href="#">Learn More</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="unit-4">
+              <div class="unit-4-icon">
+                <img src="{% static 'userapp/images/flaticon-svg/svg/005-megaphone.svg' %}" alt="image" class="img-fluid w-25 mb-4">
+              </div>
+              <div>
+                <h3>Financial Management</h3>
+                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                <p><a href="#">Learn More</a></p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section" id="about-section">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-6 mb-5" data-aos="fade-up" data-aos-delay="">
+            <figure class="circle-bg">
+            <img src="{% static 'userapp/images/hero_1.jpg'%}" alt="image" class="img-fluid">
+            </figure>
+          </div>
+          <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="100">
+            
+
+            <div class="row">
+
+              
+              
+              <div class="col-12 mb-4" data-aos="fade-up" data-aos-delay="">
+                <div class="unit-4 d-flex">
+                  <div class="unit-4-icon mr-4 mb-3"><span class="text-primary flaticon-head"></span></div>
+                  <div>
+                    <h3>Bank Loan</h3>
+                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                    <p class="mb-0"><a href="#">Learn More</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="unit-4 d-flex">
+                  <div class="unit-4-icon mr-4 mb-3"><span class="text-primary flaticon-smartphone"></span></div>
+                  <div>
+                    <h3>Banking Consulation </h3>
+                    <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+                    <p class="mb-0"><a href="#">Learn More</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            
+          </div>
+        </div>
+
+        
+      </div>
+    </section>
+  
+    
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-5">
+                <h2 class="footer-heading mb-4">About Us</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque facere laudantium magnam voluptatum autem. Amet aliquid nesciunt veritatis aliquam.</p>
+              </div>
+              <div class="col-md-3 ml-auto">
+                <h2 class="footer-heading mb-4">Quick Links</h2>
+                <ul class="list-unstyled">
+                  <li><a href="{% url 'home' %}" class="smoothscroll">Home</a></li>
+                  <li><a href="{% url 'admin_login' %}" class="smoothscroll">Admin</a></li>
+                  <li><a href="{% url 'user_login' %}" class="smoothscroll">User</a></li>
+                  <li><a href="{% url 'about' %}" class="smoothscroll">About Us</a></li>
+                  <li><a href="{% url 'contact' %}" class="smoothscroll">Contact Us</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3 footer-social">
+                <h2 class="footer-heading mb-4">Follow Us</h2>
+                <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="row pt-5 text-center">
+          <div class="col-md-12">
+            <div class="border-top pt-5">
+              <p class="copyright"><small>
+             
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> 
+            All rights reserved | Designed by <a href="">Codebook.in</a>
+           </small></p>
+        
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </footer>
+
+  </div> <!-- .site-wrap -->
+
+  <script src="{% static 'userapp/js/jquery-3.3.1.min.js'%}"></script>
+  <script src="{% static 'userapp/js/jquery-ui.js'%}"></script>
+  <script src="{% static 'userapp/js/popper.min.js'%}"></script>
+  <script src="{% static 'userapp/js/bootstrap.min.js'%}"></script>
+  <script src="{% static 'userapp/js/owl.carousel.min.js'%}"></script>
+  <script src="{% static 'userapp/js/jquery.countdown.min.js'%}"></script>
+  <script src="{% static 'userapp/js/jquery.easing.1.3.js'%}"></script>
+  <script src="{% static 'userapp/js/aos.js'%}"></script>
+  <script src="{% static 'userapp/js/jquery.fancybox.min.js'%}"></script>
+  <script src="{% static 'userapp/js/jquery.sticky.js'%}"></script>
+  <script src="{% static 'userapp/js/isotope.pkgd.min.js'%}"></script>
+  <script src="{% static 'userapp/js/main.js' %}"></script>
+
+  
+  </body>
+</html>

@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <title>Admin - ADA Boost Algorithm</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- SweetAlert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            background: #2C3E50;
+            color: white;
+            overflow-y: auto;
+        }
+
+        .sidebar .user-info {
+            padding: 20px;
+            background: #1a252f;
+            text-align: center;
+        }
+
+        .sidebar .user-info img {
+            border-radius: 50%;
+        }
+
+        .sidebar .menu {
+            padding: 0;
+        }
+
+        .sidebar .menu ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .sidebar .menu ul li {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .menu ul li.active, .sidebar .menu ul li:hover {
+            background-color: #34495e;
+        }
+
+        .sidebar .menu ul li i {
+            margin-right: 10px;
+        }
+
+        .sidebar .menu ul li .ml-menu {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .sidebar .menu ul li.open .ml-menu {
+            display: block;
+        }
+
+        .sidebar .menu .header {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 15px 20px;
+            background: #1a252f;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .navbar {
+            margin-left: 250px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .card {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if messages %}
+    {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <script>swal("Success!", "{{message}}", "success");</script>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+            <script>swal("Warning!", "{{message}}", "warning");</script>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            <script>swal("Info!", "{{message}}", "info");</script>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <script>swal("Error!", "{{message}}", "error");</script>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="user-info">
+            <img src="{% static 'adminapp/images/user.png' %}" width="48" height="48" alt="User">
+            <div class="name">John Doe</div>
+        </div>
+        <div class="menu">
+            <ul class="list">
+                <li class="header">MAIN NAVIGATION</li>
+                <li>
+                    <a href="{% url 'admin_dash' %}"><i class="material-icons">home</i>Home</a>
+                </li>
+                <li class="dropdown-toggle">
+                    <i class="material-icons">people</i> User Management
+                    <ul class="ml-menu">
+                        <li><a href="{% url 'all_users' %}">All Users</a></li>
+                        <li><a href="{% url 'active_users' %}">Active Users</a></li>
+                        <li><a href="{% url 'pending_users' %}">Pending Users</a></li>
+                        <li><a href="{% url 'rejected_users' %}">Rejected Users</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown-toggle">
+                    <i class="material-icons">assignment</i> Banking Dataset
+                    <ul class="ml-menu">
+                        <li><a href="{% url 'upload_dataset'%}">Upload Dataset</a></li>
+                        <li><a href="{% url 'view_dataset'%}">View Dataset</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown-toggle active">
+                    <i class="material-icons">view_list</i> Algorithms
+                    <ul class="ml-menu">
+                        <li><a href="{% url 'logreg' %}">Logistic Regression</a></li>
+                        <li><a href="{% url 'multinb' %}">Multinomial Naive Baiyes</a></li>
+                        <li class="active"><a href="{% url 'adaboost' %}">ADA Boost Classifier</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown-toggle">
+                    <i class="material-icons">poll</i> Analysis
+                    <ul class="ml-menu">
+                        <li><a href="{% url 'analysis' %}">Algorithm Analysis</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+>
+    </aside>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'admin_dash' %}">ADMIN</a>
+            <div class="ml-auto">
+                <a href="{% url 'home' %}" class="btn btn-warning">LOG OUT</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="card text-center mt-4">
+                        <div class="card-body">
+                            <h3 class="card-title">ADA Boost Algorithm</h3>
+                            <a href="{% url 'ada_run' data.data_id %}">
+                                <button type="button" class="btn btn-primary btn-lg mt-3">Run Algorithm</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">DATASET</h4>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Algorithm</th>
+                                        <th>Precision</th>
+                                        <th>Accuracy</th>
+                                        <th>F1 Score</th>
+                                        <th>Recall</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>ADA Boost</td>
+                                        <td>{{data.ad_precision}}</td>
+                                        <td>{{data.ad_accuracy}}</td>
+                                        <td>{{data.ad_f1_score}}</td>
+                                        <td>{{data.ad_recall}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- JS Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Expand/collapse sidebar items
+        $(document).ready(function () {
+            $('.dropdown-toggle').click(function () {
+                $(this).toggleClass('open');
+                $(this).find('.ml-menu').slideToggle('fast');
+            });
+        });
+    </script>
+
+</body>
+</html>

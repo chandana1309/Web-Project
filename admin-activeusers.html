@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=1024">
+    <title>Admin - Active Users</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts & Material Icons -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap & Plugins -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/node-waves/dist/waves.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/morris.js/morris.css" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: #e91e63;
+            margin-bottom: 0;
+        }
+
+        .navbar .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .navbar .btn-warning {
+            margin-right: 10px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(to bottom, #3f51b5, #1a237e);
+            color: white;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+
+        .sidebar .user-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .sidebar .user-info img {
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .menu ul.list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .menu ul.list > li > a {
+            color: white;
+            padding: 12px 20px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .menu ul.list > li > a:hover,
+        .menu ul.list > li.active > a {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu ul.ml-menu {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .menu ul.ml-menu li a {
+            padding: 10px 40px;
+            display: block;
+            color: #fff;
+        }
+
+        .menu-toggle:after {
+            content: '▼';
+            float: right;
+            margin-top: 5px;
+        }
+
+        .menu-toggle.collapsed:after {
+            content: '►';
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .table img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .btn-info {
+            background-color: #0097a7;
+            border: none;
+        }
+
+        .legal {
+            color: #bbb;
+            padding: 10px 20px;
+            font-size: 12px;
+        }
+
+        .header h2 {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body class="theme-red">
+
+    {% if messages %}
+    {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <script>swal("Success!", "{{message}}", "success");</script>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+            <script>swal("Warning!", "{{message}}", "warning");</script>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            <script>swal("Info", "{{message}}", "info");</script>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <script>swal("Error!", "{{message}}", "error");</script>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left"><div class="circle"></div></div>
+                    <div class="circle-clipper right"><div class="circle"></div></div>
+                </div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'admin_dash' %}">ADMIN</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'home' %}" role="button">
+                            <span class="btn btn-warning">LOG OUT</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside id="leftsidebar" class="sidebar">
+        <div class="user-info">
+            <img src="{% static 'adminapp/images/user.png'%}" width="64" height="64" alt="User">
+            <div class="name">John Doe</div>
+        </div>
+        <div class="menu">
+            <ul class="list">
+                <li class="header">MAIN NAVIGATION</li>
+                <li><a href="{% url 'admin_dash' %}"><i class="material-icons">home</i><span>Home</span></a></li>
+
+                <li class="active">
+                    <a href="#" class="menu-toggle"> <i class="material-icons">people</i> User Management </a>
+                    <ul class="ml-menu">
+                        <li><a href="{% url 'all_users' %}">All Users</a></li>
+                        <li class="active"><a href="{% url 'active_users' %}">Active Users</a></li>
+                        <li><a href="{% url 'pending_users' %}">Pending Users</a></li>
+                        <li><a href="{% url 'rejected_users' %}">Rejected Users</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#" class="menu-toggle"> <i class="material-icons">assignment</i> Banking Dataset </a>
+                    <ul class="ml-menu">
+                        <li><a href="{% url 'upload_dataset'%}">Upload Dataset</a></li>
+                        <li><a href="{% url 'view_dataset'%}">View Dataset</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#" class="menu-toggle"> <i class="material-icons">view_list</i> Algorithms </a>
+                    <ul class="ml-menu">
+                        <li><a href="{% url 'logreg' %}">Logistic Regression</a></li>
+                        <li><a href="{% url 'multinb' %}">Multinomial Naive Bayes</a></li>
+                        <li><a href="{% url 'adaboost' %}">ADA Boost Classifier</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#" class="menu-toggle"> <i class="material-icons">poll</i> Analysis </a>
+                    <ul class="ml-menu">
+                        <li><a href="{% url 'analysis' %}">Algorithm Analysis</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="legal">
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>ACTIVE USERS</h2>
+                        </div>
+                        <div class="body table-responsive">
+                            <table class="table table-bordered table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Profile Picture</th>
+                                        <th>First Name</th>
+                                        <th>Email ID</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in user %}
+                                    <tr>
+                                        <th scope="row">{{i.user_id}}</th>
+                                        <td><img src="media/{{i.image}}" alt="profile"></td>
+                                        <td>{{i.name}}</td>
+                                        <td>{{i.email}}</td>
+                                        <td><label class="label label-success">{{i.user_status}}</label></td>
+                                        <td>
+                                            <a href="{% url 'change_status' i.user_id %}">
+                                                <button class="btn btn-sm btn-info" onclick="return myFunction();">
+                                                    <i class="material-icons">swap_horiz</i>
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/node-waves/dist/waves.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.menu-toggle').click(function () {
+                $(this).next('.ml-menu').slideToggle('fast');
+                $(this).toggleClass('collapsed');
+            });
+        });
+    </script>
+
+</body>
+
+</html>

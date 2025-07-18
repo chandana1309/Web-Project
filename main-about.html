@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>About Us</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Google Fonts + Bootstrap + AOS + Icons -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/icomoon@1.0.0/style.css">
+
+  <!-- Fancybox -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+
+  <!-- Custom Style -->
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f4f7fc;
+      color: #333;
+    }
+
+    .navbar {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .navbar-brand {
+      color: #1a73e8;
+      font-weight: bold;
+      font-size: 1.8rem;
+    }
+
+    .navbar-nav .nav-link {
+      font-weight: 600;
+      color: #444;
+    }
+
+    .navbar-nav .nav-link.active,
+    .navbar-nav .nav-link:hover {
+      color: #1a73e8;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1a73e8;
+      margin-bottom: 1rem;
+    }
+
+    .lead {
+      color: #555;
+    }
+
+    .team-member {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .team-member:hover {
+      transform: translateY(-5px);
+    }
+
+    .team-member img {
+      width: 100%;
+      height: auto;
+    }
+
+    .team-member h3 {
+      margin-top: 1rem;
+    }
+
+    .team-member .position {
+      color: #888;
+    }
+
+    .footer {
+      background: #f1f3f5;
+      padding: 3rem 0;
+    }
+
+    .footer h5 {
+      color: #1a73e8;
+      font-weight: bold;
+    }
+
+    .footer a {
+      color: #1a73e8;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    /* Responsive Fixes */
+    @media (max-width: 991px) {
+      .navbar-collapse {
+        background: white;
+        padding: 1rem;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+      }
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="70">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">Banker<span class="text-primary">.</span></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{% url 'admin_login' %}" class="nav-link">Admin</a></li>
+        <li class="nav-item"><a href="{% url 'user_login' %}" class="nav-link">User</a></li>
+        <li class="nav-item"><a href="{% url 'about' %}" class="nav-link active">About Us</a></li>
+        <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ABOUT SECTION -->
+<section class="container text-center py-5">
+  <h2 class="section-title" data-aos="fade-up">About Us</h2>
+  <p class="lead" data-aos="fade-up" data-aos-delay="100">
+    We're a modern financial company helping users manage money and grow wealth.
+  </p>
+
+  <div class="row align-items-center mt-5">
+    <div class="col-md-6" data-aos="fade-right">
+      <img src="{% static 'mainapp/images/hero_2.jpg' %}" alt="About" class="img-fluid rounded shadow-sm">
+    </div>
+    <div class="col-md-6" data-aos="fade-left" data-aos-delay="100">
+      <h3 class="mt-4">We Solve Your Financial Problems</h3>
+      <p>Our mission is to provide you with powerful tools, trusted advice, and secure services that make financial management simple and smart.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM SECTION -->
+<section class="container py-5">
+  <h2 class="section-title text-center" data-aos="fade">Our Team</h2>
+  <div class="row mt-4">
+    <div class="col-md-3" data-aos="zoom-in">
+      <div class="team-member text-center p-3">
+        <img src="{% static 'mainapp/images/person_5.jpg' %}" alt="Kaiara" class="img-fluid">
+        <h3>Kaiara Spencer</h3>
+        <p class="position">Finance Manager</p>
+      </div>
+    </div>
+    <div class="col-md-3" data-aos="zoom-in" data-aos-delay="100">
+      <div class="team-member text-center p-3">
+        <img src="{% static 'mainapp/images/person_6.jpg' %}" alt="Dave" class="img-fluid">
+        <h3>Dave Simpson</h3>
+        <p class="position">Marketing Manager</p>
+      </div>
+    </div>
+    <div class="col-md-3" data-aos="zoom-in" data-aos-delay="200">
+      <div class="team-member text-center p-3">
+        <img src="{% static 'mainapp/images/person_7.jpg' %}" alt="Ben" class="img-fluid">
+        <h3>Ben Thompson</h3>
+        <p class="position">Accountant</p>
+      </div>
+    </div>
+    <div class="col-md-3" data-aos="zoom-in" data-aos-delay="300">
+      <div class="team-member text-center p-3">
+        <img src="{% static 'mainapp/images/person_8.jpg' %}" alt="Kyla" class="img-fluid">
+        <h3>Kyla Stewart</h3>
+        <p class="position">Advisor</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h5>About Us</h5>
+        <p>We offer digital banking services to simplify your financial life with safety and confidence.</p>
+      </div>
+      <div class="col-md-3">
+        <h5>Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'admin_login' %}">Admin</a></li>
+          <li><a href="{% url 'user_login' %}">User</a></li>
+          <li><a href="{% url 'about' %}">About Us</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h5>Follow Us</h5>
+        <a href="#"><span class="icon-facebook"></span></a>
+        <a href="#"><span class="icon-twitter"></span></a>
+        <a href="#"><span class="icon-instagram"></span></a>
+      </div>
+    </div>
+    <div class="text-center pt-4 copyright">
+      &copy; <script>document.write(new Date().getFullYear())</script> Banker. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<!-- JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init();</script>
+</body>
+</html>

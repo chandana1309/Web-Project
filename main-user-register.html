@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>User Registration</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/icomoon@1.0.0/style.css">
+  <!-- SweetAlert -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.6rem;
+      color: #1a73e8 !important;
+    }
+
+    .nav-link {
+      font-weight: 600;
+      color: #444 !important;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #1a73e8 !important;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #1a73e8;
+      margin-bottom: 2rem;
+    }
+
+    .regcard {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .regcard input[type="text"],
+    .regcard input[type="email"],
+    .regcard input[type="password"],
+    .regcard input[type="file"] {
+      border-radius: 8px;
+      height: 45px;
+    }
+
+    .btn-primary {
+      background-color: #1a73e8;
+      border: none;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background-color: #155ab6;
+    }
+
+    .logimg {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    footer {
+      background: #f1f3f5;
+      padding: 3rem 0;
+      font-size: 0.9rem;
+    }
+
+    .footer-heading {
+      font-weight: 600;
+      color: #1a73e8;
+    }
+
+    .footer-social a {
+      font-size: 1.2rem;
+      margin-right: 10px;
+      color: #1a73e8;
+    }
+
+    .footer-social a:hover {
+      color: #155ab6;
+    }
+
+    @media (max-width: 768px) {
+      .logimg {
+        margin-bottom: 2rem;
+      }
+
+      .regcard {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SweetAlert -->
+{% if messages %}
+  {% for message in messages %}
+    <script>
+      swal({
+        title: "{{ message.tags|capfirst }}",
+        text: "{{ message }}",
+        icon: "{{ message.tags }}",
+        button: "OK",
+      });
+    </script>
+  {% endfor %}
+{% endif %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">Banker<span class="text-primary">.</span></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{% url 'admin_login' %}" class="nav-link">Admin</a></li>
+        <li class="nav-item"><a href="{% url 'user_login' %}" class="nav-link">User</a></li>
+        <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About Us</a></li>
+        <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Registration Form -->
+<section class="container my-5">
+  <h2 class="section-title text-center">User Registration</h2>
+
+  <div class="row align-items-center justify-content-center">
+    <div class="col-md-6 col-lg-5 mb-4">
+      <img src="{% static 'mainapp/images/img_3.jpg' %}" class="logimg" alt="Registration">
+    </div>
+
+    <div class="col-md-6 col-lg-6">
+      <div class="regcard">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Full Name</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Email Address</label>
+              <input type="email" class="form-control" name="email" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Phone Number</label>
+              <input type="text" class="form-control" name="phone" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Password</label>
+              <input type="password" class="form-control" name="pwd" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Address</label>
+              <input type="text" class="form-control" name="address" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Upload Profile Picture</label>
+              <input type="file" class="form-control-file" name="image" accept="image/*">
+            </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary px-5 py-2">Register</button>
+          </div>
+        </form>
+
+        <p class="text-center mt-3">Already have an account?
+          <a href="{% url 'user_login' %}" class="text-primary">Sign in here.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h5 class="footer-heading">About Us</h5>
+        <p>We help users register securely and access banking services. Built with ❤️ by Codebook.in.</p>
+      </div>
+      <div class="col-md-3">
+        <h5 class="footer-heading">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'admin_login' %}">Admin</a></li>
+          <li><a href="{% url 'user_login' %}">User</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h5 class="footer-heading">Follow Us</h5>
+        <a href="#"><span class="icon-facebook"></span></a>
+        <a href="#"><span class="icon-twitter"></span></a>
+        <a href="#"><span class="icon-instagram"></span></a>
+        <a href="#"><span class="icon-linkedin"></span></a>
+      </div>
+    </div>
+    <div class="text-center pt-4">
+      <small>&copy; <script>document.write(new Date().getFullYear());</script> Codebook.in — All rights reserved.</small>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

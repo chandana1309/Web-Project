@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Fraud Detection Results</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+
+    <!-- Icomoon Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/icomoon@1.0.0/style.css">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- jQuery UI -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+    <!-- Fancybox -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <style>
+      body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #f8fafc;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+      }
+
+      .site-navbar {
+        background-color: #fff;
+        border-bottom: 1px solid #eaeaea;
+        padding: 15px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .site-logo a {
+        font-weight: bold;
+        font-size: 1.8rem;
+        color: #1a73e8 !important;
+        text-decoration: none;
+      }
+
+      .site-navigation .site-menu {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .site-navigation .site-menu li {
+        margin-left: 25px;
+      }
+
+      .site-navigation .nav-link {
+        font-weight: 600;
+        color: #333 !important;
+        padding: 10px 0;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .site-navigation .nav-link:hover,
+      .site-navigation .nav-link.active {
+        color: #1a73e8 !important;
+      }
+
+      .rescard {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+        transition: transform 0.3s ease;
+      }
+
+      .rescard:hover {
+        transform: translateY(-5px);
+      }
+
+      .rescard .text-primary {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .site-footer {
+        background-color: #f1f3f5;
+        padding: 3rem 0;
+      }
+
+      @media (max-width: 991px) {
+        .site-navigation .site-menu {
+          flex-direction: column;
+          align-items: flex-start;
+          background-color: #fff;
+          padding: 1rem;
+        }
+        .site-navigation .site-menu li {
+          margin-left: 0;
+          margin-bottom: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+    {% if messages %}
+      {% for message in messages %}
+        <script>swal({title: "{{ message.tags|title }}!", text: "{{ message }}", icon: "{{ message.tags }}", button: "OK"});</script>
+      {% endfor %}
+    {% endif %}
+
+    <div class="site-wrap">
+      <header class="site-navbar py-3">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-6 col-xl-2">
+              <div class="site-logo">
+                <a href="{% url 'home' %}" class="h2 mb-0">Banker<span class="text-primary">.</span></a>
+              </div>
+            </div>
+            <div class="col-6 col-xl-10">
+              <nav class="site-navigation d-flex justify-content-end">
+                <ul class="site-menu main-menu d-flex list-unstyled mb-0">
+                  <li class="mx-2"><a href="{% url 'user_dash' %}" class="nav-link">Dashboard</a></li>
+                  <li class="mx-2"><a href="{% url 'user_profile' %}" class="nav-link">Profile</a></li>
+                  <li class="mx-2"><a href="{% url 'user_predict' %}" class="nav-link">Detect Fraud</a></li>
+                  <li class="mx-2"><a href="{% url 'home' %}" class="nav-link">Logout</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="site-section bg-light" id="user-predict" data-aos="fade">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 text-center mt-5">
+              <h2 class="section-title mt-5">Detect Fraud Results</h2>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="site-section bg-light" data-aos="fade">
+        <div class="container-xxl py-2">
+          <div class="container py-2 px-lg-5">
+            <div class="text-center mb-5">
+              <h1>This banking dataset is...</h1>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-lg-10 rescard card p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <!-- Optional description -->
+                  </div>
+                  <div class="col-4">
+                    {% if p.result == 'Genuine' %}
+                      <img src="{% static 'userapp/images/genuine.jpg' %}" alt="Genuine" width="100%">
+                    {% elif p.result == 'Fake' %}
+                      <img src="{% static 'userapp/images/fraud.jpg' %}" alt="Fraud" width="100%">
+                    {% endif %}
+                  </div>
+                </div>
+                <hr>
+                <div class="row text-center">
+                  <div class="col">
+                    <h2>Amount</h2>
+                    <p class="h3 text-primary">{{ p.amount }}</p>
+                  </div>
+                </div>
+                <hr>
+                <div class="row text-center">
+                  <div class="col">
+                    <h2>oldbalanceOrg</h2>
+                    <p class="h3 text-primary">{{ p.oldbalanceOrg }}</p>
+                  </div>
+                  <div class="col">
+                    <h2>newbalanceOrig</h2>
+                    <p class="h3 text-primary">{{ p.newbalanceOrig }}</p>
+                  </div>
+                </div>
+                <hr>
+                <div class="row text-center">
+                  <div class="col">
+                    <h2>oldbalanceDest</h2>
+                    <p class="h3 text-primary">{{ p.oldbalanceDest }}</p>
+                  </div>
+                  <div class="col">
+                    <h2>newbalanceDest</h2>
+                    <p class="h3 text-primary">{{ p.newbalanceDest }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-5">
+              <h2 class="footer-heading mb-4">About Us</h2>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div>
+            <div class="col-md-3 ml-auto">
+              <h2 class="footer-heading mb-4">Quick Links</h2>
+              <ul class="list-unstyled">
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact Us</a></li>
+              </ul>
+            </div>
+            <div class="col-md-3 footer-social">
+              <h2 class="footer-heading mb-4">Follow Us</h2>
+              <a href="#"><span class="icon-facebook"></span></a>
+              <a href="#"><span class="icon-twitter"></span></a>
+              <a href="#"><span class="icon-instagram"></span></a>
+              <a href="#"><span class="icon-linkedin"></span></a>
+            </div>
+          </div>
+          <div class="row pt-5 text-center">
+            <div class="col-md-12">
+              <div class="border-top pt-5">
+                <p><small>&copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Designed by <a href="">Codebook.in</a></small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- JS Scripts -->
+    <script src="{% static 'userapp/js/jquery-3.3.1.min.js'%}"></script>
+    <script src="{% static 'userapp/js/jquery-ui.js'%}"></script>
+    <script src="{% static 'userapp/js/popper.min.js'%}"></script>
+    <script src="{% static 'userapp/js/bootstrap.min.js'%}"></script>
+    <script src="{% static 'userapp/js/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'userapp/js/jquery.countdown.min.js'%}"></script>
+    <script src="{% static 'userapp/js/jquery.easing.1.3.js'%}"></script>
+    <script src="{% static 'userapp/js/aos.js'%}"></script>
+    <script src="{% static 'userapp/js/jquery.fancybox.min.js'%}"></script>
+    <script src="{% static 'userapp/js/jquery.sticky.js'%}"></script>
+    <script src="{% static 'userapp/js/isotope.pkgd.min.js'%}"></script>
+    <script src="{% static 'userapp/js/main.js'%}"></script>
+  </body>
+</html>

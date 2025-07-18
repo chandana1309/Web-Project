@@ -1,0 +1,296 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Admin - All Users </title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+    <!-- SweetAlert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #f8f9fa, #e3f2fd);
+        }
+
+        .navbar {
+            background-color: #dc3545 !important;
+        }
+
+        .navbar .navbar-brand {
+            color: #fff !important;
+            font-weight: bold;
+        }
+
+        aside.sidebar {
+            background-color: #343a40;
+            min-height: 100vh;
+            color: white;
+        }
+
+        aside.sidebar .user-info {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        aside.sidebar .user-info .name {
+            margin-top: 0.5rem;
+        }
+
+        aside.sidebar .menu ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        aside.sidebar .menu ul li a {
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+        }
+
+        aside.sidebar .menu ul li a i {
+            margin-right: 1rem;
+        }
+
+        aside.sidebar .menu ul li.active > a {
+            background-color: #495057;
+        }
+
+        .ml-menu {
+            display: none;
+            background-color: #495057;
+            padding-left: 2rem;
+        }
+
+        .ml-menu a {
+            padding: 0.5rem 0;
+            display: block;
+        }
+
+        .menu-toggle::after {
+            content: '▼';
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+
+        .menu-toggle.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h2 {
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        table th,
+        table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body class="theme-red">
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <script>
+                    swal("Success!", "{{ message }}", "success");
+                </script>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                <script>
+                    swal("Warning!", "{{ message }}", "warning");
+                </script>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                <script>
+                    swal("Info!", "{{ message }}", "info");
+                </script>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <script>
+                    swal("Error!", "{{ message }}", "error");
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper d-none">
+        <div class="loader">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+
+    <!-- Top Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'admin_dash' %}">ADMIN</a>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="btn btn-warning">LOG OUT</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="d-flex">
+        <!-- Sidebar -->
+        <aside class="sidebar p-3">
+            <!-- User Info -->
+            <div class="user-info">
+                <img src="{% static 'adminapp/images/user.png'%}" class="rounded-circle" width="80" height="80" alt="User">
+                <div class="name">John Doe</div>
+            </div>
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li>
+                        <a href="{% url 'admin_dash' %}">
+                            <i class="material-icons">home</i> Home
+                        </a>
+                    </li>
+
+                    <li class="active">
+                        <a href="#" class="menu-toggle"> <i class="material-icons">people</i> User Management</a>
+                        <ul class="ml-menu">
+                            <li class="active"><a href="{% url 'all_users' %}">All Users</a></li>
+                            <li><a href="{% url 'active_users' %}">Active Users</a></li>
+                            <li><a href="{% url 'pending_users' %}">Pending Users</a></li>
+                            <li><a href="{% url 'rejected_users' %}">Rejected Users</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#" class="menu-toggle"><i class="material-icons">assignment</i> Banking Dataset</a>
+                        <ul class="ml-menu">
+                            <li><a href="{% url 'upload_dataset' %}">Upload Dataset</a></li>
+                            <li><a href="{% url 'view_dataset' %}">View Dataset</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#" class="menu-toggle"><i class="material-icons">view_list</i> Algorithms</a>
+                        <ul class="ml-menu">
+                            <li><a href="{% url 'logreg' %}">Logistic Regression</a></li>
+                            <li><a href="{% url 'multinb' %}">Multinomial Naive Bayes</a></li>
+                            <li><a href="{% url 'adaboost' %}">ADA Boost Classifier</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#" class="menu-toggle"><i class="material-icons">poll</i> Analysis</a>
+                        <ul class="ml-menu">
+                            <li><a href="{% url 'analysis' %}">Algorithm Analysis</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center mt-3">
+                <small>&copy; Designed by <a href="#" class="text-warning">Codebook.in</a></small>
+            </div>
+        </aside>
+
+        <!-- Content Section -->
+        <section class="content flex-grow-1 p-4">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="card">
+                        <div class="header p-3">
+                            <h2>ALL USERS</h2>
+                        </div>
+                        <div class="body table-responsive p-3">
+                            <table class="table table-bordered table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Profile Picture</th>
+                                        <th>Name</th>
+                                        <th>Email ID</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                        <th>View Profile</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in user %}
+                                    <tr>
+                                        <th scope="row">{{ i.user_id }}</th>
+                                        <td>
+                                            <img src="media/{{ i.image }}" class="rounded-circle" style="width: 6em; height: 6em;">
+                                        </td>
+                                        <td>{{ i.name }}</td>
+                                        <td>{{ i.email }}</td>
+                                        <td><span class="badge bg-warning text-dark">{{ i.user_status }}</span></td>
+                                        <td>
+                                            <a href="{% url 'accept_user' i.user_id %}">
+                                                <button class="btn btn-success btn-sm">Accept</button>
+                                            </a>
+                                            <a href="{% url 'reject_user' i.user_id %}">
+                                                <button class="btn btn-danger btn-sm">Reject</button>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'view_profile' i.user_id %}">
+                                                <button class="btn btn-info btn-sm">View</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.querySelectorAll('.menu-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                this.classList.toggle('collapsed');
+                const menu = this.nextElementSibling;
+                if (menu) {
+                    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

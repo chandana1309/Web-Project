@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Algorithm Analysis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap & Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(145deg, #1a1a2e, #16213e);
+      margin: 0;
+      color: #fff;
+    }
+
+    .navbar {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #333;
+    }
+
+    .navbar-brand {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .btn-logout {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+
+    #leftsidebar {
+      width: 260px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
+      padding-top: 60px;
+      z-index: 10;
+    }
+
+    #leftsidebar .user-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .user-info img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+
+    .user-info .name {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .sidebar .list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar .list li a {
+      color: #fff;
+      padding: 12px 20px;
+      display: block;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .sidebar .list li a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      padding-left: 30px;
+    }
+
+    .sidebar .list .menu-toggle::after {
+      content: "\f107";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      float: right;
+    }
+
+    .sidebar .list .menu-open > .ml-menu {
+      display: block;
+    }
+
+    .ml-menu {
+      display: none;
+      padding-left: 20px;
+    }
+
+    .content {
+      margin-left: 260px;
+      padding: 40px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+
+    .header h2 {
+      padding: 20px;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      margin: 0;
+      font-weight: bold;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    table.table {
+      color: #fff;
+    }
+
+    table.table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .table th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .copyright {
+      text-align: center;
+      font-size: 13px;
+      padding: 15px;
+      color: #aaa;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="navbar-brand">ADMIN</div>
+    <a href="{% url 'home' %}" class="btn btn-warning btn-logout">LOG OUT</a>
+  </div>
+
+  <!-- Sidebar -->
+  <aside id="leftsidebar" class="sidebar">
+    <div class="user-info">
+      <img src="{% static 'adminapp/images/user.png'%}" alt="Admin">
+      <div class="name">John Doe</div>
+    </div>
+    <ul class="list">
+      <li><a href="{% url 'admin_dash' %}"><i class="fas fa-home me-2"></i>Home</a></li>
+      <li class="menu-toggle"><a href="#"><i class="fas fa-users me-2"></i>User Management</a>
+        <ul class="ml-menu">
+          <li><a href="{% url 'all_users' %}">All Users</a></li>
+          <li><a href="{% url 'active_users' %}">Active Users</a></li>
+          <li><a href="{% url 'pending_users' %}">Pending Users</a></li>
+          <li><a href="{% url 'rejected_users' %}">Rejected Users</a></li>
+        </ul>
+      </li>
+      <li class="menu-toggle"><a href="#"><i class="fas fa-database me-2"></i>Banking Dataset</a>
+        <ul class="ml-menu">
+          <li><a href="{% url 'upload_dataset' %}">Upload Dataset</a></li>
+          <li><a href="{% url 'view_dataset' %}">View Dataset</a></li>
+        </ul>
+      </li>
+      <li class="menu-toggle"><a href="#"><i class="fas fa-code-branch me-2"></i>Algorithms</a>
+        <ul class="ml-menu">
+          <li><a href="{% url 'logreg' %}">Logistic Regression</a></li>
+          <li><a href="{% url 'multinb' %}">Multinomial Naive Bayes</a></li>
+          <li><a href="{% url 'adaboost' %}">ADA Boost Classifier</a></li>
+        </ul>
+      </li>
+      <li class="menu-toggle menu-open"><a href="#"><i class="fas fa-chart-line me-2"></i>Analysis</a>
+        <ul class="ml-menu">
+          <li class="active"><a href="{% url 'analysis' %}">Algorithm Analysis</a></li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="card">
+      <div class="header"><h2>ALGORITHM ANALYSIS CHART</h2></div>
+      <div class="p-4">
+        <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="header"><h2>DATASET</h2></div>
+      <div class="p-4 table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Algorithm</th>
+              <th>Precision</th>
+              <th>Accuracy</th>
+              <th>F1 Score</th>
+              <th>Recall</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>1</th><td>Logistic Regression</td><td>{{lr_p}}</td><td>{{lr_a}}</td><td>{{lr_f}}</td><td>{{lr_r}}</td></tr>
+            <tr><th>2</th><td>Multinomial Naive Bayes</td><td>{{mnb_p}}</td><td>{{mnb_a}}</td><td>{{mnb_f}}</td><td>{{mnb_r}}</td></tr>
+            <tr><th>3</th><td>ADA Boost</td><td>{{ada_p}}</td><td>{{ada_a}}</td><td>{{ada_f}}</td><td>{{ada_r}}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+  <script>
+    $(".menu-toggle").click(function () {
+      $(this).toggleClass("menu-open");
+    });
+
+    window.onload = function () {
+      var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        backgroundColor: "transparent",
+        title: { text: "Algorithms Comparison Graph", fontColor: "#fff" },
+        axisX: { labelFontColor: "#fff" },
+        axisY: { labelFontColor: "#fff" },
+        legend: { cursor: "pointer", itemclick: toggleDataSeries, fontColor: "#fff" },
+        toolTip: { shared: true },
+        data: [{
+          type: "column", name: "Accuracy", showInLegend: true,
+          dataPoints: [
+            { label: "ADA Boost", y: {{ada_a}} },
+            { label: "Multinomial Naive Bayes", y: {{mnb_a}} },
+            { label: "Logistic Regression", y: {{lr_a}} }
+          ]
+        }, {
+          type: "column", name: "Precision", showInLegend: true,
+          dataPoints: [
+            { label: "ADA Boost", y: {{ada_p}} },
+            { label: "Multinomial Naive Bayes", y: {{mnb_p}} },
+            { label: "Logistic Regression", y: {{lr_p}} }
+          ]
+        }, {
+          type: "column", name: "F1 Score", showInLegend: true,
+          dataPoints: [
+            { label: "ADA Boost", y: {{ada_f}} },
+            { label: "Multinomial Naive Bayes", y: {{mnb_f}} },
+            { label: "Logistic Regression", y: {{lr_f}} }
+          ]
+        }, {
+          type: "column", name: "Recall", axisYType: "secondary", showInLegend: true,
+          dataPoints: [
+            { label: "ADA Boost", y: {{ada_r}} },
+            { label: "Multinomial Naive Bayes", y: {{mnb_r}} },
+            { label: "Logistic Regression", y: {{lr_r}} }
+          ]
+        }]
+      });
+      chart.render();
+
+      function toggleDataSeries(e) {
+        e.dataSeries.visible = !(typeof e.dataSeries.visible === "undefined" || e.dataSeries.visible);
+        chart.render();
+      }
+    }
+  </script>
+</body>
+</html>
